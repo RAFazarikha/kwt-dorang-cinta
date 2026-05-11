@@ -1,8 +1,10 @@
-import { Navbar } from "@/components/navbar"
-import { HeroSection } from "@/components/hero-section"
-import { AboutSection } from "@/components/about-section"
-import { FeatureSection } from "@/components/feature-section"
-import { Footer } from "@/components/footer"
+import AboutSection from "@/components/about-section";
+import FeatureSection from "@/components/feature-section";
+import Footer from "@/components/footer";
+import HeroSection from "@/components/hero-section";
+import Navbar from "@/components/navbar";
+import ProductSection from "@/components/product-section";
+
 
 export default function HomePage() {
   return (
@@ -11,6 +13,7 @@ export default function HomePage() {
       <HeroSection />
       <AboutSection />
       <FeatureSection />
+      <ProductSection />
       <Footer />
     </main>
   )
