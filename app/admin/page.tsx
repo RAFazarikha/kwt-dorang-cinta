@@ -1,22 +1,16 @@
 import { createClient } from "@/lib/supabase/server"
-import Link from "next/link"
-
-import { Button, buttonVariants } from "@/components/ui/button"
+import { ProductTable } from "@/components/admin/product-table"
+import { TransactionTable } from "@/components/admin/transaksi-table"
+import { EventTable } from "@/components/admin/event-table"
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import Image from "next/image"
-import { ProductDeleteButton } from "@/components/admin/product-delete-button"
-import { ProductSearch } from "@/components/admin/product-search"
-import { DataTable } from "@/components/admin/data-table"
 import { TablePagination } from "@/components/admin/table-pagination"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { CalendarDays, MoreHorizontal, Pencil, Receipt, Sprout } from "lucide-react"
+import { CalendarDays, Receipt, Sprout } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-import { TransactionDeleteButton } from "@/components/admin/transaksi-delete-button"
 
 export interface Event {
   id: string;
@@ -160,227 +154,6 @@ export default async function AdminDashboardPage({
         ascending: false,
       })
 
-  // =========================
-  // TABLE DATA
-  // =========================
-  const productTableData =
-    products?.map((product) => ({
-      nama: product.name,
-
-      harga: `Rp ${Number(
-        product.price
-      ).toLocaleString("id-ID")}`,
-
-      stok: product.stock,
-
-      gambar: (
-        <Image
-          width={56}
-          height={56}
-          src={product.image_url}
-          alt={product.name}
-          className="h-14 w-14 rounded-lg object-cover"
-        />
-      ),
-
-      action: (
-        <DropdownMenu>
-          <DropdownMenuTrigger render={
-            <Button
-              size="icon"
-              variant="ghost"
-            >
-              <MoreHorizontal className="h-5 w-5" />
-            </Button>
-          }>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem render={
-              <Link
-                href={`/admin/product/${product.id}`}
-                className={buttonVariants({ variant: "outline", className: "w-full justify-start" })}
-              >
-                <Pencil className="mr-2 h-4 w-4" />
-                Edit
-              </Link>
-            }>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="text-red-600" render={
-              <ProductDeleteButton
-                productId={product.id}
-                imageUrl={product.image_url}
-              />
-            }>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
-    })) || []
-
-  // =========================
-  // TRANSACTION TABLE DATA
-  // =========================
-  const transactionTableData =
-    transactions?.map((transaction) => ({
-      pembeli: transaction.buyer_name,
-
-      produk:
-        transaction.products?.name ||
-        "-",
-
-      qty: transaction.quantity,
-
-      total: `Rp ${Number(
-        transaction.total_price
-      ).toLocaleString("id-ID")}`,
-
-      tanggal: transaction.transaction_date
-        ? new Date(
-            transaction.transaction_date
-          ).toLocaleDateString("id-ID")
-        : "-",
-
-      action: (
-        <DropdownMenu>
-          <DropdownMenuTrigger render={
-            <Button
-              size="icon"
-              variant="ghost"
-            >
-              <MoreHorizontal className="h-5 w-5" />
-            </Button>
-          }>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem render={
-              <Link
-                href={`/admin/transaksi/${transaction.id}`}
-                className={buttonVariants({ variant: "outline", className: "w-full justify-start" })}
-              >
-                <Pencil className="mr-2 h-4 w-4" />
-                Edit
-              </Link>
-            }>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="text-red-600" render={
-              <TransactionDeleteButton
-                transaksiId={transaction.id}
-              />
-            }>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      ),
-    })) || []
-
-  // =========================
-  // EVENT TABLE DATA
-  // =========================
-  const eventTableData =
-    events?.map((event) => ({
-      judul: event.title,
-
-      lokasi: event.location || "-",
-
-      tanggal: new Date(
-        event.event_date
-      ).toLocaleDateString("id-ID"),
-
-      status: event.is_published
-        ? "Published"
-        : "Draft",
-    })) || []
-
-  // =========================
-  // TABLE COLUMNS
-  // =========================
-  type ProductTableItem = typeof productTableData[0];
-
-  const productColumns: { key: keyof ProductTableItem; label: string }[] = [
-    {
-      key: "nama",
-      label: "Nama Produk",
-    },
-    {
-      key: "harga",
-      label: "Harga",
-    },
-    {
-      key: "stok",
-      label: "Stok",
-    },
-    {
-      key: "gambar",
-      label: "Gambar",
-    },
-    {
-      key: "action",
-      label: "Action",
-    },
-  ]
-
-  type TransactionTableItem =
-    typeof transactionTableData[0]
-
-  const transactionColumns: {
-    key: keyof TransactionTableItem
-    label: string
-  }[] = [
-    {
-      key: "pembeli",
-      label: "Pembeli",
-    },
-    {
-      key: "produk",
-      label: "Produk",
-    },
-    {
-      key: "qty",
-      label: "Qty",
-    },
-    {
-      key: "total",
-      label: "Total",
-    },
-    {
-      key: "tanggal",
-      label: "Tanggal",
-    },
-    {
-      key: "action",
-      label: "Action",
-    },
-  ]
-
-  type EventTableItem =
-    typeof eventTableData[0]
-
-  const eventColumns: {
-    key: keyof EventTableItem
-    label: string
-  }[] = [
-    {
-      key: "judul",
-      label: "Judul Event",
-    },
-    {
-      key: "lokasi",
-      label: "Lokasi",
-    },
-    {
-      key: "tanggal",
-      label: "Tanggal",
-    },
-    {
-      key: "status",
-      label: "Status",
-    },
-  ]
-
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -415,8 +188,8 @@ export default async function AdminDashboardPage({
                   </h2>
                 </div>
 
-                <div className="rounded-full bg-secondary/10 p-4">
-                  <Receipt className="h-7 w-7 text-primary" />
+                <div className="rounded-full bg-accent/50 p-4">
+                  <Receipt className="h-10 w-10 text-primary" />
                 </div>
               </CardContent>
             </Card>
@@ -437,8 +210,8 @@ export default async function AdminDashboardPage({
                   </h2>
                 </div>
 
-                <div className="rounded-full bg-secondary/10 p-4">
-                  <CalendarDays className="h-7 w-7 text-primary" />
+                <div className="rounded-full bg-accent/50 p-4">
+                  <CalendarDays className="h-10 w-10 text-primary" />
                 </div>
               </CardContent>
             </Card>
@@ -459,8 +232,8 @@ export default async function AdminDashboardPage({
                   </h2>
                 </div>
 
-                <div className="rounded-full bg-secondary/10 p-4">
-                  <Sprout className="h-7 w-7 text-primary" />
+                <div className="rounded-full bg-accent/50 p-4">
+                  <Sprout className="h-10 w-10 text-primary" />
                 </div>
               </CardContent>
             </Card>
@@ -468,34 +241,20 @@ export default async function AdminDashboardPage({
         </TabsList>
 
         <TabsContent value="products">
-          {/* Search + Button */}
-          <div className="mb-3 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <ProductSearch />
-
-            <Link href="/admin/product">
-              <Button className="bg-primary hover:bg-secondary">
-                Tambah Produk
-              </Button>
-            </Link>
-          </div>
-
-          <DataTable
-            columns={productColumns}
-            data={productTableData}
+          <ProductTable
+            products={products || []}
           />
         </TabsContent>
 
         <TabsContent value="transactions">
-          <DataTable
-            columns={transactionColumns}
-            data={transactionTableData}
+          <TransactionTable
+            transactions={transactions || []}
           />
         </TabsContent>
 
         <TabsContent value="events">
-          <DataTable
-            columns={eventColumns}
-            data={eventTableData}
+          <EventTable
+            events={events || []}
           />
         </TabsContent>
 

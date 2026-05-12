@@ -82,3 +82,65 @@ export async function updateProduct(id: string, data: ProductPayload) {
 
   revalidatePath("/admin")
 }
+
+interface UpdateStokPayload {
+  stock: number
+}
+
+export async function updateStokProduct(
+  productId: string,
+  payload: UpdateStokPayload
+) {
+
+  const supabase =
+    await createClient()
+
+  // =========================
+  // VALIDASI
+  // =========================
+
+  if (!productId) {
+    throw new Error(
+      "ID produk tidak ditemukan"
+    )
+  }
+
+  if (payload.stock < 0) {
+    throw new Error(
+      "Stok tidak valid"
+    )
+  }
+
+  // =========================
+  // UPDATE STOCK
+  // =========================
+
+  const {
+    error,
+  } = await supabase
+    .from("products")
+    .update({
+      stock: payload.stock,
+    })
+    .eq("id", productId)
+
+  if (error) {
+    throw new Error(
+      error.message
+    )
+  }
+
+  // =========================
+  // REVALIDATE
+  // =========================
+
+  revalidatePath("/admin")
+
+  revalidatePath("/admin/product")
+
+  return {
+    success: true,
+    message:
+      "Stok berhasil diperbarui",
+  }
+}

@@ -2,225 +2,183 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  /* =========================
-     COLORS
-  ========================= */
-  --background: #f8f9fa;
-  --foreground: #191c1d;
-
-  --card: #ffffff;
+  /* Brand & Layout Backgrounds */
+  --background: #ffffff; /* Clean White */
+  --foreground: #191c1d; /* on-surface */
+  --card: #ffffff; /* Clean White */
   --card-foreground: #191c1d;
-
   --popover: #ffffff;
   --popover-foreground: #191c1d;
 
-  /* Primary Green */
-  --primary: #2e7d32;
-  --primary-foreground: #ffffff;
+  /* Primary Actions */
+  --primary: #2e7d32; /* Primary Green */
+  --primary-foreground: #ffffff; /* Clean White */
 
-  /* Secondary Green */
-  --secondary: #4caf50;
-  --secondary-foreground: #ffffff;
+  /* Secondary Actions */
+  --secondary: #f5f5dc; /* Soft Cream */
+  --secondary-foreground: #2e7d32; /* Primary Green */
 
-  /* Soft Cream */
-  --accent: #f5f5dc;
-  --accent-foreground: #2e7d32;
+  /* Muted & Accents */
+  --muted: #f8f9fa; /* Light Gray */
+  --muted-foreground: #707a6c; /* outline */
+  --accent: #4caf50; /* Secondary Green */
+  --accent-foreground: #ffffff;
 
-  --muted: #f3f4f5;
-  --muted-foreground: #40493d;
+  /* Status */
+  --destructive: #ba1a1a; /* error */
+  --destructive-foreground: #ffffff; /* on-error */
 
-  --border: #d9dadb;
-  --input: #e7e8e9;
-  --ring: #2e7d32;
+  /* Inputs & Borders */
+  --border: #f8f9fa; /* Light Gray */
+  --input: #f8f9fa; /* Light Gray */
+  --ring: #2e7d32; /* Primary Green */
 
-  --destructive: #ba1a1a;
-  --destructive-foreground: #ffffff;
+  /* Charts */
+  --chart-1: #2e7d32;
+  --chart-2: #4caf50;
+  --chart-3: #88d982;
+  --chart-4: #a3f69c;
+  --chart-5: #0d631b;
 
   /* Sidebar */
-  --sidebar: #ffffff;
+  --sidebar: #f8f9fa;
   --sidebar-foreground: #191c1d;
   --sidebar-primary: #2e7d32;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f5f5dc;
   --sidebar-accent-foreground: #2e7d32;
-  --sidebar-border: #d9dadb;
-  --sidebar-ring: #4caf50;
+  --sidebar-border: #e1e3e4; /* surface-variant */
+  --sidebar-ring: #2e7d32;
 
-  /* =========================
-     TYPOGRAPHY
-  ========================= */
+  /* Typography */
   --font-sans: "Plus Jakarta Sans", sans-serif;
   --font-heading: "Montserrat", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* =========================
-     RADIUS
-  ========================= */
-  --radius: 0.5rem;
+  /* Shapes */
+  --radius: 0.5rem; /* Base: 8px */
 
-  /* =========================
-     SHADOWS
-  ========================= */
-  --shadow-green-sm:
-    0px 4px 20px rgba(46, 125, 50, 0.06);
-
-  --shadow-green-lg:
-    0px 12px 32px rgba(46, 125, 50, 0.12);
-
-  /* =========================
-     SPACING
-  ========================= */
-  --spacing: 0.25rem;
+  /* Elevation & Depth (Ambient Shadows) */
+  --shadow-sm: 0px 2px 10px rgba(46, 125, 50, 0.04);
+  --shadow: 0px 4px 20px rgba(46, 125, 50, 0.06); /* Level 1 (Cards) */
+  --shadow-md: 0px 12px 32px rgba(46, 125, 50, 0.12); /* Level 2 (Hover/Modals) */
+  --shadow-lg: 0px 16px 48px rgba(46, 125, 50, 0.16);
+  --shadow-xl: 0px 24px 64px rgba(46, 125, 50, 0.20);
 }
 
-/* =========================
-   DARK MODE
-========================= */
-/* .dark {
+.dark {
+  /* Dark mode derived from YAML inverse colors */
   --background: #191c1d;
   --foreground: #f8f9fa;
+  --card: #2e3132;
+  --card-foreground: #f0f1f2;
+  --popover: #2e3132;
+  --popover-foreground: #f0f1f2;
 
-  --card: #232728;
-  --card-foreground: #f8f9fa;
-
-  --popover: #232728;
-  --popover-foreground: #f8f9fa;
-
-  --primary: #88d982;
+  --primary: #88d982; /* inverse-primary */
   --primary-foreground: #002204;
-
-  --secondary: #78dc77;
-  --secondary-foreground: #002204;
-
-  --accent: #2f332f;
-  --accent-foreground: #cbffc2;
+  --secondary: #40493d;
+  --secondary-foreground: #88d982;
 
   --muted: #2e3132;
   --muted-foreground: #bfcaba;
+  --accent: #4caf50;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ffdad6; /* error-container */
+  --destructive-foreground: #93000a; /* on-error-container */
 
   --border: #40493d;
-  --input: #40493d;
+  --input: #2e3132;
   --ring: #88d982;
 
-  --sidebar: #232728;
-  --sidebar-foreground: #f8f9fa;
+  --chart-1: #88d982;
+  --chart-2: #4caf50;
+  --chart-3: #2e7d32;
+  --chart-4: #0d631b;
+  --chart-5: #a3f69c;
+
+  --sidebar: #2e3132;
+  --sidebar-foreground: #f0f1f2;
   --sidebar-primary: #88d982;
   --sidebar-primary-foreground: #002204;
-  --sidebar-accent: #2f332f;
-  --sidebar-accent-foreground: #cbffc2;
+  --sidebar-accent: #40493d;
+  --sidebar-accent-foreground: #88d982;
   --sidebar-border: #40493d;
   --sidebar-ring: #88d982;
-} */
+}
 
-/* =========================
-   THEME MAPPING
-========================= */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
-
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-
   --color-sidebar-accent: var(--sidebar-accent);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Typography */
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
   --font-mono: var(--font-mono);
 
-  /* Radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+  --radius-sm: calc(var(--radius) - 4px); /* 4px */
+  --radius-md: calc(var(--radius) + 4px); /* 12px */
+  --radius-lg: calc(var(--radius) + 8px); /* 16px */
+  --radius-xl: calc(var(--radius) + 16px); /* 24px (Large containers per DESIGN.md) */
 
-  /* Shadows */
-  --shadow-sm: var(--shadow-green-sm);
-  --shadow-md: var(--shadow-green-sm);
-  --shadow-lg: var(--shadow-green-lg);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
 }
 
-/* =========================
-   BASE LAYER
-========================= */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground;
   }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: var(--font-heading);
-    letter-spacing: -0.02em;
-    @apply font-semibold text-foreground;
+  /* Optional: Set headline elements to use the new heading font */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight;
   }
-
   .custom {
     @apply py-16 md:py-24;
   }
 
   .container-custom {
     @apply max-w-300 mx-auto px-4 md:px-10;
-  }
-
-  .card-modern {
-    @apply bg-card rounded-xl p-6 shadow-md border border-border;
-  }
-
-  .btn-primary {
-    @apply bg-primary text-primary-foreground rounded-lg px-6 py-3 font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
-  }
-
-  .btn-secondary {
-    @apply bg-accent text-primary rounded-lg px-6 py-3 font-medium transition-all duration-300 hover:bg-secondary hover:text-white;
-  }
-
-  .input-modern {
-    @apply bg-muted border-0 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:outline-none transition-all;
   }
 }

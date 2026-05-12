@@ -1,7 +1,7 @@
 import ProductForm from "@/components/admin/product-form";
 
 
-export default function EventPage() {
+export default function ProductPage() {
   return (
     <div className="space-y-8">
       <div>

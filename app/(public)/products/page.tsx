@@ -1,7 +1,4 @@
-import AboutSection from "@/components/about-section";
-import FeatureSection from "@/components/feature-section";
 import Footer from "@/components/footer";
-import HeroSection from "@/components/hero-section";
 import Navbar from "@/components/navbar";
 import ProductSection from "@/components/product-section";
 
@@ -10,10 +7,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-background">
       <Navbar />
-      <HeroSection />
-      <AboutSection />
-      <FeatureSection />
-      <ProductSection isHome />
+      <ProductSection />
       <Footer />
     </main>
   )

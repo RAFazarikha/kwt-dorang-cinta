@@ -25,7 +25,7 @@ export function DataTable<T>({
     <div className="overflow-x-auto rounded-xl border border-border">
       <Table className="px-3">
         <TableHeader>
-          <TableRow>
+          <TableRow className="border-primary">
             {columns.map((column) => (
               // Perlu di-cast ke string karena keyof T bisa berupa number/symbol
               <TableHead key={String(column.key)} className="px-6!">
@@ -37,7 +37,7 @@ export function DataTable<T>({
 
         <TableBody>
           {data.map((item, index) => (
-            <TableRow key={index}>
+            <TableRow key={index} className="border-primary">
               {columns.map((column) => (
                 <TableCell key={String(column.key)} className="px-6!">
                   {/* Cast ke ReactNode agar React tahu ini aman untuk di-render */}

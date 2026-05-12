@@ -14,11 +14,11 @@ import {
 const navItems = [
   {
     label: "Beranda",
-    href: "#beranda",
+    href: "/#beranda",
   },
   {
     label: "Produk",
-    href: "#produk",
+    href: "/products",
   },
   {
     label: "Tentang Kami",
