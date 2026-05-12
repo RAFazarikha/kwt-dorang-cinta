@@ -48,7 +48,7 @@ const features = [
 
 export default function FeatureSection() {
   return (
-    <section className="bg-background">
+    <section className="bg-background custom">
       <div className="container-custom">
         <div className="mx-auto mb-16 max-w-2xl text-center">
           <h2 className="text-4xl font-bold tracking-tight text-primary">

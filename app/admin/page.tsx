@@ -16,6 +16,7 @@ import { TablePagination } from "@/components/admin/table-pagination"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { CalendarDays, MoreHorizontal, Pencil, Receipt, Sprout } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
+import { TransactionDeleteButton } from "@/components/admin/transaksi-delete-button"
 
 export interface Event {
   id: string;
@@ -208,7 +209,8 @@ export default async function AdminDashboardPage({
 
             <DropdownMenuItem className="text-red-600" render={
               <ProductDeleteButton
-                id={product.id}
+                productId={product.id}
+                imageUrl={product.image_url}
               />
             }>
             </DropdownMenuItem>
@@ -239,6 +241,40 @@ export default async function AdminDashboardPage({
             transaction.transaction_date
           ).toLocaleDateString("id-ID")
         : "-",
+
+      action: (
+        <DropdownMenu>
+          <DropdownMenuTrigger render={
+            <Button
+              size="icon"
+              variant="ghost"
+            >
+              <MoreHorizontal className="h-5 w-5" />
+            </Button>
+          }>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem render={
+              <Link
+                href={`/admin/transaksi/${transaction.id}`}
+                className={buttonVariants({ variant: "outline", className: "w-full justify-start" })}
+              >
+                <Pencil className="mr-2 h-4 w-4" />
+                Edit
+              </Link>
+            }>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="text-red-600" render={
+              <TransactionDeleteButton
+                transaksiId={transaction.id}
+              />
+            }>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
     })) || []
 
   // =========================
@@ -313,6 +349,10 @@ export default async function AdminDashboardPage({
     {
       key: "tanggal",
       label: "Tanggal",
+    },
+    {
+      key: "action",
+      label: "Action",
     },
   ]
 

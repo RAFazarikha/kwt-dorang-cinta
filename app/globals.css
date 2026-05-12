@@ -200,7 +200,7 @@
     @apply font-semibold text-foreground;
   }
 
-  section {
+  .custom {
     @apply py-16 md:py-24;
   }
 

@@ -30,7 +30,7 @@ const stats = [
 
 export default function AboutSection() {
   return (
-    <section className="bg-muted/40">
+    <section className="bg-muted/40 custom">
       <div className="container-custom grid gap-16 lg:grid-cols-2">
         <div className="space-y-8">
           <h2 className="text-4xl font-bold leading-tight text-primary">

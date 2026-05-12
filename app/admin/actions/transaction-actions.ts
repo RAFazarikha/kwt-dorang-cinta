@@ -10,6 +10,22 @@ interface TransactionPayload {
   unit_price: number
 }
 
+export async function deleteTransaction(id: string) {
+  const supabase = await createClient()
+
+  const {error} = await supabase
+   .from("transactions")
+   .delete()
+   .eq("id", id)
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  revalidatePath("/admin")
+  return { success: true }
+}
+
 export async function createTransaction(payload: TransactionPayload) {
   const supabase = await createClient()
 

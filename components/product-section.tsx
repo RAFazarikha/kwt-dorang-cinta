@@ -60,7 +60,7 @@ const products = [
 
 export default function ProductSection() {
   return (
-    <section id="produk" className="bg-muted/30">
+    <section id="produk" className="bg-muted/30 custom">
       <div className="container-custom">
         {/* Header */}
         <div className="mx-auto mb-16 max-w-3xl text-center">

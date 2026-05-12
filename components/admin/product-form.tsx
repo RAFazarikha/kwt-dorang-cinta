@@ -1,36 +1,26 @@
 "use client"
-
 import { useState } from "react"
-
 import { useRouter } from "next/navigation"
-
-import { createClient } from "@/lib/supabase/client"
-
 import { toast } from "sonner"
-
 import { Button } from "@/components/ui/button"
-
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group"
-
 import {
   Card,
   CardContent,
 } from "@/components/ui/card"
-
 import { Label } from "@/components/ui/label"
-
 import {
   Package,
   ImageIcon,
   Wallet,
   Boxes,
 } from "lucide-react"
-
-import Image from "next/image"
+import { createProduct, updateProduct } from "@/app/admin/actions/product-actions"
+import ImageUpload from "../ui/image-upload"
 
 interface ProductFormProps {
   initialData?: {
@@ -42,35 +32,19 @@ interface ProductFormProps {
   }
 }
 
-export default function ProductForm({
-  initialData,
-}: ProductFormProps) {
+export default function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter()
-
-  const supabase = createClient()
 
   // =========================
   // STATE
   // =========================
-  const [name, setName] = useState(
-    initialData?.name || ""
-  )
+  const [name, setName] = useState(initialData?.name || "")
+  const [price, setPrice] = useState(initialData?.price || 0)
+  const [stock, setStock] = useState(initialData?.stock || 0)
 
-  const [price, setPrice] = useState(
-    initialData?.price || 0
-  )
-
-  const [stock, setStock] = useState(
-    initialData?.stock || 0
-  )
-
-  const [imageUrl, setImageUrl] =
-    useState(
-      initialData?.image_url || ""
-    )
-
-  const [loading, setLoading] =
-    useState(false)
+  // Kita cukup gunakan satu state ini saja untuk gambar
+  const [imageUrl, setImageUrl] = useState(initialData?.image_url || "")
+  const [loading, setLoading] = useState(false)
 
   const isEdit = !!initialData
 
@@ -81,70 +55,33 @@ export default function ProductForm({
     try {
       setLoading(true)
 
-      // =========================
-      // UPDATE
-      // =========================
+      const payload = {
+        name: name,
+        price: price,
+        stock: stock,
+        image_url: imageUrl,
+      }
+
       if (isEdit) {
-        const { error } = await supabase
-          .from("products")
-          .update({
-            name,
-            price,
-            stock,
-            image_url: imageUrl,
-          })
-          .eq("id", initialData.id)
-
-        if (error) {
-          toast.error(error.message)
-          return
-        }
-
-        toast.success(
-          "Produk berhasil diperbarui"
-        )
-
+        await updateProduct(initialData.id, payload)
+        toast.success("Produk berhasil diperbarui")
         router.push("/admin")
-        router.refresh()
+      } else {
+        await createProduct(payload)
+        toast.success("Produk berhasil ditambahkan")
 
-        return
+        // reset form
+        setName("")
+        setPrice(0)
+        setStock(0)
+        setImageUrl("")
       }
 
-      // =========================
-      // CREATE
-      // =========================
-      const { error } = await supabase
-        .from("products")
-        .insert({
-          name,
-          price,
-          stock,
-          image_url: imageUrl,
-        })
-
-      if (error) {
-        toast.error(error.message)
-        return
-      }
-
-      toast.success(
-        "Produk berhasil ditambahkan"
-      )
-
-      // reset form
-      setName("")
-      setPrice(0)
-      setStock(0)
-      setImageUrl("")
-
-      router.push("/admin")
       router.refresh()
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error)
-
-      toast.error(
-        "Terjadi kesalahan"
-      )
+      const message = error instanceof Error ? error.message : "Terjadi kesalahan"
+      toast.error(message)
     } finally {
       setLoading(false)
     }
@@ -156,11 +93,8 @@ export default function ProductForm({
         {/* Header */}
         <div>
           <h2 className="text-2xl font-bold text-primary">
-            {isEdit
-              ? "Edit Produk"
-              : "Tambah Produk"}
+            {isEdit ? "Edit Produk" : "Tambah Produk"}
           </h2>
-
           <p className="mt-2 text-muted-foreground">
             {isEdit
               ? "Perbarui data produk."
@@ -171,17 +105,13 @@ export default function ProductForm({
         {/* Product Name */}
         <div className="space-y-2">
           <Label>Nama Produk</Label>
-
           <InputGroup>
             <InputGroupInput
               type="text"
               placeholder="Contoh: Selada Hidroponik"
               value={name}
-              onChange={(e) =>
-                setName(e.target.value)
-              }
+              onChange={(e) => setName(e.target.value)}
             />
-
             <InputGroupAddon>
               <Package />
             </InputGroupAddon>
@@ -193,19 +123,13 @@ export default function ProductForm({
           {/* Price */}
           <div className="space-y-2">
             <Label>Harga Produk</Label>
-
             <InputGroup>
               <InputGroupInput
                 type="number"
                 placeholder="Masukkan harga"
                 value={price}
-                onChange={(e) =>
-                  setPrice(
-                    Number(e.target.value)
-                  )
-                }
+                onChange={(e) => setPrice(Number(e.target.value))}
               />
-
               <InputGroupAddon>
                 <Wallet />
               </InputGroupAddon>
@@ -215,19 +139,13 @@ export default function ProductForm({
           {/* Stock */}
           <div className="space-y-2">
             <Label>Stok Produk</Label>
-
             <InputGroup>
               <InputGroupInput
                 type="number"
                 placeholder="Masukkan stok"
                 value={stock}
-                onChange={(e) =>
-                  setStock(
-                    Number(e.target.value)
-                  )
-                }
+                onChange={(e) => setStock(Number(e.target.value))}
               />
-
               <InputGroupAddon>
                 <Boxes />
               </InputGroupAddon>
@@ -235,68 +153,45 @@ export default function ProductForm({
           </div>
         </div>
 
-        {/* Image URL */}
+        {/* Upload Gambar via Cloudinary */}
         <div className="space-y-2">
-          <Label>URL Gambar Produk</Label>
+          <label className="block text-sm font-medium mb-2">Upload Gambar (Otomatis)</label>
+          <ImageUpload
+            value={imageUrl}
+            onChange={(url) => setImageUrl(url)}
+            onRemove={() => setImageUrl("")}
+          />
+        </div>
 
+        {/* Atau Input Image URL Manual */}
+        <div className="space-y-2">
+          <Label>URL Gambar</Label>
           <InputGroup>
             <InputGroupInput
               placeholder="https://..."
               value={imageUrl}
-              onChange={(e) =>
-                setImageUrl(
-                  e.target.value
-                )
-              }
+              onChange={(e) => setImageUrl(e.target.value)}
+              disabled
             />
-
             <InputGroupAddon>
               <ImageIcon />
             </InputGroupAddon>
           </InputGroup>
         </div>
 
-        {/* Preview */}
-        {imageUrl && (
-          <div className="overflow-hidden rounded-2xl border border-border">
-            <Image
-              width={100}
-              height={100}
-              src={imageUrl}
-              alt="Preview"
-              className="h-64 w-full object-cover"
-            />
-          </div>
-        )}
-
         <div className="rounded-2xl bg-secondary/10 p-5">
           <h3 className="text-lg font-semibold text-primary">
             Preview Produk
           </h3>
-
           <div className="mt-4 space-y-2">
             <p>
-              <span className="font-medium">
-                Nama:
-              </span>{" "}
-              {name || "-"}
+              <span className="font-medium">Nama:</span> {name || "-"}
             </p>
-
             <p>
-              <span className="font-medium">
-                Harga:
-              </span>{" "}
-              Rp{" "}
-              {Number(price).toLocaleString(
-                "id-ID"
-              )}
+              <span className="font-medium">Harga:</span> Rp {Number(price).toLocaleString("id-ID")}
             </p>
-
             <p>
-              <span className="font-medium">
-                Stok:
-              </span>{" "}
-              {stock}
+              <span className="font-medium">Stok:</span> {stock}
             </p>
           </div>
         </div>
@@ -307,11 +202,7 @@ export default function ProductForm({
           disabled={loading}
           className="w-full bg-primary hover:bg-secondary"
         >
-          {loading
-            ? "Menyimpan..."
-            : isEdit
-            ? "Update Produk"
-            : "Simpan Produk"}
+          {loading ? "Menyimpan..." : isEdit ? "Update Produk" : "Simpan Produk"}
         </Button>
       </CardContent>
     </Card>

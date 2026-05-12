@@ -19,15 +19,19 @@ interface DeleteDialogProps {
   title: string
   description: string
   onDelete: () => void
+  open: boolean // <-- UBAH JADI boolean
+  onOpenChange: (open: boolean) => void // <-- UBAH TIPE FUNGSINYA
 }
 
 export function DeleteDialog({
   title,
   description,
   onDelete,
+  open,
+  onOpenChange
 }: DeleteDialogProps) {
   return (
-    <AlertDialog>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogTrigger render={
         <Button
           variant="ghost"

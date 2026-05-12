@@ -2,16 +2,14 @@
 
 import { useState } from "react" // 1. Import useState
 import { toast } from "sonner"
-import { deleteProduct } from "@/app/admin/actions/product-actions"
 import { DeleteDialog } from "@/components/admin/delete-dialog"
 import { useRouter } from "next/navigation"
+import { deleteTransaction } from "@/app/admin/actions/transaction-actions"
 
-export function ProductDeleteButton({
-  productId,
-  imageUrl
+export function TransactionDeleteButton({
+  transaksiId,
 }: {
-  productId: string
-  imageUrl: string
+  transaksiId: string
 }) {
   const router = useRouter()
 
@@ -19,16 +17,16 @@ export function ProductDeleteButton({
 
   const handleDelete = async () => {
     try {
-      await deleteProduct(productId, imageUrl)
+      await deleteTransaction(transaksiId)
 
-      toast.success("Produk berhasil dihapus")
+      toast.success("Transaksi berhasil dihapus")
 
       setIsOpen(false)
 
       router.refresh()
     } catch (error) {
       toast.error(
-        "Gagal menghapus produk: " + (error as Error).message
+        "Gagal menghapus transaksi: " + (error as Error).message
       )
     }
   }
@@ -38,8 +36,8 @@ export function ProductDeleteButton({
       // 4. Masukkan state ke dalam properti dialog
       open={isOpen}
       onOpenChange={setIsOpen}
-      title="Hapus Produk"
-      description="Produk akan dihapus permanen dari database."
+      title="Hapus Transaksi"
+      description="Transaksi akan dihapus permanen dari database."
       onDelete={handleDelete}
     />
   )

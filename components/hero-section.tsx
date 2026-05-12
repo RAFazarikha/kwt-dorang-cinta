@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react"
 
 export default function HeroSection() {
   return (
-    <section id="beranda" className="relative overflow-hidden">
+    <section id="beranda" className="relative overflow-hidden custom">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-20"
         style={{
