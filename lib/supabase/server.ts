@@ -14,9 +14,16 @@ export async function createClient() {
         },
 
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
-          )
+          try {
+            cookiesToSet.forEach(({ name, value, options }) =>
+              cookieStore.set(name, value, options)
+            )
+          } catch (error) {
+            // Error diabaikan di sini.
+            // Ini mencegah aplikasi crash ketika fungsi dipanggil dari Server Component
+            // yang tidak memiliki izin untuk memodifikasi cookie.
+            console.error(error)
+          }
         },
       },
     }

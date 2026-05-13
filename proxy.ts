@@ -1,7 +1,7 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({
     request,
   })
@@ -33,18 +33,16 @@ export async function middleware(request: NextRequest) {
   )
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
   const pathname = request.nextUrl.pathname
 
-  // protect admin route
-  if (pathname.startsWith("/admin") && !session) {
+  if (pathname.startsWith("/admin") && !user) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
 
-  // redirect if already login
-  if (pathname === "/login" && session) {
+  if (pathname === "/login" && user) {
     return NextResponse.redirect(new URL("/admin", request.url))
   }
 
@@ -52,5 +50,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/login"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 }

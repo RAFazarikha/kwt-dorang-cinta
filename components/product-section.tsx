@@ -57,7 +57,7 @@ export default async function ProductSection({
         {/* HEADER */}
         <div className="mx-auto mb-16 max-w-3xl text-center">
 
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-secondary/10 px-4 py-2 text-sm font-medium text-primary">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
 
             <Leaf className="h-4 w-4" />
 
@@ -119,7 +119,6 @@ export default async function ProductSection({
                       />
 
                       <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-primary backdrop-blur">
-
                         Produk KWT
                       </div>
                     </div>

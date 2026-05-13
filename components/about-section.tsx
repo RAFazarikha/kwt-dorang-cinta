@@ -57,9 +57,9 @@ export default function AboutSection() {
             return (
               <div
                 key={index}
-                className="card-modern flex flex-col items-center justify-center gap-4 text-center"
+                className="bg-primary/10 p-6 shadow-md rounded-lg flex flex-col items-center justify-center gap-4 text-center"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-secondary/10">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/50">
                   <Icon className="h-6 w-6 text-primary" />
                 </div>
 

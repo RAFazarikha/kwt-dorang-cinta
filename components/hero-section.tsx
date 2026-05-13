@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 export default function HeroSection() {
   return (
@@ -14,7 +15,7 @@ export default function HeroSection() {
 
       <div className="container-custom relative grid items-center lg:grid-cols-2">
         <div className="space-y-8">
-          <div className="inline-flex rounded-full bg-secondary/20 px-4 py-2 text-sm text-primary">
+          <div className="inline-flex rounded-full bg-primary/20 px-4 py-2 text-sm text-primary">
             Pertanian Perkotaan Modern
           </div>
 
@@ -31,9 +32,14 @@ export default function HeroSection() {
           </div>
 
           <div className="flex flex-wrap gap-4">
-            <Button className="h-12 rounded-lg bg-primary px-6 text-white hover:bg-secondary">
-              Belanja Produk
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Button
+              className="h-12 rounded-lg bg-primary px-6 text-white hover:bg-secondary"
+              render={
+              <Link href="/products">
+                Belanja Produk
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            }>
             </Button>
 
             <Button
