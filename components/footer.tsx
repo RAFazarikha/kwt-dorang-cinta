@@ -16,8 +16,8 @@ const navItems = [
     href: "/products",
   },
   {
-    label: "Tentang Kami",
-    href: "#",
+    label: "Event",
+    href: "/events",
   },
   {
     label: "Galeri",

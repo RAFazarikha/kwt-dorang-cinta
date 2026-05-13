@@ -16,7 +16,9 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
@@ -146,6 +148,11 @@ export default function StokProductForm({
       }
     }
 
+  const productOptions = products.map((product) => ({
+    label: product.name,
+    value: product.id.toString()
+  }));
+
   return (
     <Card className="rounded-2xl border-border shadow-sm">
 
@@ -195,25 +202,27 @@ export default function StokProductForm({
             onValueChange={
               setSelectedProductId
             }
+            items={productOptions}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Pilih produk" />
             </SelectTrigger>
-
             <SelectContent>
-
-              {products.map(
-                (product) => (
-                  <SelectItem
-                    key={product.id}
-                    value={
-                      product.id
-                    }
-                  >
-                    {product.name}
-                  </SelectItem>
-                )
-              )}
+              <SelectGroup>
+                <SelectLabel>Pilih Produk</SelectLabel>
+                {products.map(
+                  (product) => (
+                    <SelectItem
+                      key={product.id}
+                      value={
+                        product.id
+                      }
+                    >
+                      {product.name}
+                    </SelectItem>
+                  )
+                )}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>

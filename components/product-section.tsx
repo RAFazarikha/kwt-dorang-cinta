@@ -8,7 +8,7 @@ import {
 
 import { createClient } from "@/lib/supabase/server"
 
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 
 import {
   Card,
@@ -33,6 +33,7 @@ export default async function ProductSection({
   let query = supabase
     .from("products")
     .select("*")
+    .gt("stock", 0)
     .order("created_at", {
       ascending: false,
     })
@@ -46,6 +47,8 @@ export default async function ProductSection({
   const {
     data: products,
   } = await query
+
+  const phoneNumber = "6281235816937";
 
   return (
     <section
@@ -107,7 +110,6 @@ export default async function ProductSection({
 
                     {/* IMAGE */}
                     <div className="relative h-64 overflow-hidden">
-
                       <Image
                         src={
                           product.image_url ||
@@ -117,7 +119,6 @@ export default async function ProductSection({
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-
                       <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-primary backdrop-blur">
                         Produk KWT
                       </div>
@@ -127,29 +128,21 @@ export default async function ProductSection({
                     <CardContent className="space-y-5 p-6">
 
                       <div>
-
-                        <h3 className="text-2xl font-semibold text-foreground transition-colors group-hover:text-primary">
-
+                        <h3 className="capitalize text-2xl font-semibold text-foreground transition-colors group-hover:text-primary">
                           {product.name}
                         </h3>
-
                         <p className="mt-3 line-clamp-3 leading-7 text-muted-foreground">
-
                           {product.description ||
                             "Produk segar dan sehat hasil budidaya KWT Dorang Cinta."}
                         </p>
                       </div>
 
                       <div className="flex items-center justify-between">
-
                         <div>
-
                           <p className="text-sm text-muted-foreground">
                             Harga
                           </p>
-
                           <h4 className="text-xl font-bold text-primary">
-
                             Rp{" "}
                             {Number(
                               product.price
@@ -158,17 +151,25 @@ export default async function ProductSection({
                             )}
                           </h4>
                         </div>
-
-                        <Button
-                          variant="ghost"
-                          className="group/button h-auto p-0 text-primary hover:bg-transparent hover:text-secondary"
-                        >
-
-                          Detail
-
-                          <ArrowUpRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover/button:-translate-y-1 group-hover/button:translate-x-1" />
-                        </Button>
+                        <div>
+                          <p className="text-sm text-muted-foreground">
+                            Stok
+                          </p>
+                          <h4 className="text-xl font-bold text-primary">
+                            {product.stock}
+                          </h4>
+                        </div>
                       </div>
+                      <Link
+                        href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent("Halo, saya ingin memesan "+ product.name +" dari KWT Dorang Cinta.")}`}
+                        className={buttonVariants({
+                          variant: "default",
+                          size: "lg",
+                          className: "group/button w-full h-auto py-3 hover:bg-transparent hover:text-primary"
+                        })}>
+                        Pesan Sekarang
+                        <ArrowUpRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover/button:-translate-y-1 group-hover/button:translate-x-1" />
+                      </Link>
                     </CardContent>
                   </Card>
                 )
@@ -178,10 +179,9 @@ export default async function ProductSection({
             {/* CTA */}
             {isHome && (
               <div className="mt-16 flex justify-center">
-                <Link href="/products">
-                  <Button className="h-12 rounded-lg bg-primary px-8 text-white hover:bg-secondary">
-                    Lihat Semua Produk
-                  </Button>
+                <Link href="/products"
+                className={buttonVariants({ variant: "default", size: "default", className: "h-12 rounded-xl bg-primary px-8 text-white hover:bg-secondary" })}>
+                  Lihat Semua Produk
                 </Link>
               </div>
             )}

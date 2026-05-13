@@ -1,4 +1,5 @@
 import AboutSection from "@/components/about-section";
+import EventSection from "@/components/event-section";
 import FeatureSection from "@/components/feature-section";
 import Footer from "@/components/footer";
 import HeroSection from "@/components/hero-section";
@@ -14,6 +15,7 @@ export default function HomePage() {
       <AboutSection />
       <FeatureSection />
       <ProductSection isHome />
+      <EventSection isHome />
       <Footer />
     </main>
   )

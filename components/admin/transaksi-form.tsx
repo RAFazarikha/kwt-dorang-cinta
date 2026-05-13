@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ShoppingCart, User, Wallet, Boxes } from "lucide-react"
 
 type Product = {
@@ -124,6 +124,11 @@ export default function TransaksiForm({ initialData }: TransaksiFormProps) {
     }
   }
 
+  const productOptions = products.map((product) => ({
+    label: product.name,
+    value: product.id.toString()
+  }));
+
   return (
     <Card className="rounded-2xl border-border shadow-sm">
       <CardContent className="space-y-8 p-6">
@@ -153,16 +158,19 @@ export default function TransaksiForm({ initialData }: TransaksiFormProps) {
         {/* Product */}
         <div className="space-y-2">
           <Label>Pilih Produk</Label>
-          <Select value={selectedProduct} onValueChange={handleProductChange}>
+          <Select value={selectedProduct} onValueChange={handleProductChange} items={productOptions}>
             <SelectTrigger>
               <SelectValue placeholder="Pilih produk" />
             </SelectTrigger>
             <SelectContent>
-              {products.map((product) => (
-                <SelectItem key={product.id} value={product.id}>
-                  {product.name}
-                </SelectItem>
-              ))}
+              <SelectGroup>
+                <SelectLabel>Pilih Produk</SelectLabel>
+                {products.map((product) => (
+                  <SelectItem key={product.id} value={product.id}>
+                    {product.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </div>
