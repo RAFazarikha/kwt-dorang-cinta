@@ -14,16 +14,13 @@ export async function proxy(request: NextRequest) {
         getAll() {
           return request.cookies.getAll()
         },
-
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           )
-
           response = NextResponse.next({
             request,
           })
-
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
           )
@@ -38,12 +35,44 @@ export async function proxy(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
 
-  if (pathname.startsWith("/admin") && !user) {
-    return NextResponse.redirect(new URL("/login", request.url))
+  // Ambil role dari user metadata
+  const role = user?.user_metadata?.role
+
+  // 1. Proteksi akses /admin
+  if (pathname.startsWith("/admin")) {
+    if (!user) {
+      return NextResponse.redirect(new URL("/login", request.url))
+    }
+    if (role !== "admin") {
+      if (role === "member") {
+        return NextResponse.redirect(new URL("/user", request.url))
+      }
+      return NextResponse.redirect(new URL("/", request.url))
+    }
   }
 
-  if (pathname === "/login" && user) {
-    return NextResponse.redirect(new URL("/admin", request.url))
+  // 2. Proteksi akses /user
+  if (pathname.startsWith("/user")) {
+    if (!user) {
+      return NextResponse.redirect(new URL("/login", request.url))
+    }
+    if (role !== "member") {
+      if (role === "admin") {
+        return NextResponse.redirect(new URL("/admin", request.url))
+      }
+      return NextResponse.redirect(new URL("/", request.url))
+    }
+  }
+
+  // 3. Redirect otomatis jika mengakses /login TAPI sudah dalam keadaan login
+  if (pathname.startsWith("/login") && user) {
+    if (role === "admin") {
+      return NextResponse.redirect(new URL("/admin", request.url))
+    }
+    if (role === "member") {
+      return NextResponse.redirect(new URL("/user", request.url))
+    }
+    return NextResponse.redirect(new URL("/", request.url))
   }
 
   return response

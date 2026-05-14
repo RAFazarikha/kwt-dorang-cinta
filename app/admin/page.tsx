@@ -9,8 +9,18 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { TablePagination } from "@/components/admin/table-pagination"
-import { CalendarDays, Receipt, Sprout } from "lucide-react"
+import {
+  CalendarDays,
+  Receipt,
+  Sprout,
+  Users,
+  ClipboardCheck,
+  CalendarClock,
+} from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
+import { MemberTable } from "@/components/admin/member-table"
+// import { AttendanceTable } from "@/components/admin/attendance-table"
+import { ScheduleTable } from "@/components/admin/schedule-table"
 
 export interface Event {
   id: string;
@@ -78,6 +88,9 @@ export default async function AdminDashboardPage({
     productsResult,
     transactionsResult,
     eventsResult,
+    membersResult,
+    attendancesResult,
+    schedulesResult,
   ] = await Promise.all([
     supabase
       .from("products")
@@ -95,6 +108,27 @@ export default async function AdminDashboardPage({
 
     supabase
       .from("events")
+      .select("*", {
+        count: "exact",
+        head: true,
+      }),
+
+    supabase
+      .from("members")
+      .select("*", {
+        count: "exact",
+        head: true,
+      }),
+
+    supabase
+      .from("routine_attendances")
+      .select("*", {
+        count: "exact",
+        head: true,
+      }),
+
+    supabase
+      .from("duty_schedules")
       .select("*", {
         count: "exact",
         head: true,
@@ -154,16 +188,62 @@ export default async function AdminDashboardPage({
         ascending: false,
       })
 
+  // =========================
+  // FETCH MEMBERS
+  // =========================
+
+  const { data: members } =
+    await supabase
+      .from("members")
+      .select("*")
+      .order("joined_at", {
+        ascending: false,
+      })
+
+  // =========================
+  // FETCH ATTENDANCES
+  // =========================
+
+  const { data: attendances } =
+    await supabase
+      .from("routine_attendances")
+      .select(`
+        *,
+        members (
+          full_name
+        )
+      `)
+      .order("duty_date", {
+        ascending: false,
+      })
+
+  // =========================
+  // FETCH SCHEDULES
+  // =========================
+
+  const { data: schedules } =
+    await supabase
+      .from("duty_schedules")
+      .select(`
+        *,
+        members (
+          full_name
+        )
+      `)
+      .order("created_at", {
+        ascending: false,
+      })
+
   return (
     <div className="space-y-8">
       {/* Header */}
       <div>
         <h1 className="text-4xl font-bold text-primary">
-          Dashboard Produk
+          Dashboard Admin
         </h1>
 
         <p className="mt-2 text-muted-foreground">
-          Kelola produk KWT Dorang Cinta.
+          Kelola seluruh data KWT Dorang Cinta.
         </p>
       </div>
 
@@ -172,50 +252,8 @@ export default async function AdminDashboardPage({
         className="space-y-6"
         >
         <TabsList className="grid h-auto! w-full grid-cols-1 gap-6 bg-transparent p-0 md:grid-cols-2 xl:grid-cols-3">
-          <TabsTrigger
-            value="transactions"
-            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
-          >
-            <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
-              <CardContent className="flex items-center justify-between p-6">
-                <div>
-                  <p className="text-muted-foreground">
-                    Total Transaksi
-                  </p>
 
-                  <h2 className="mt-2 text-4xl font-bold text-primary">
-                    {transactionsResult.count || 0}
-                  </h2>
-                </div>
-
-                <div className="rounded-full bg-accent/50 p-4">
-                  <Receipt className="h-10 w-10 text-primary" />
-                </div>
-              </CardContent>
-            </Card>
-          </TabsTrigger>
-          <TabsTrigger
-            value="events"
-            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
-          >
-            <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
-              <CardContent className="flex items-center justify-between p-6">
-                <div>
-                  <p className="text-muted-foreground">
-                    Total Event
-                  </p>
-
-                  <h2 className="mt-2 text-4xl font-bold text-primary">
-                    {eventsResult.count || 0}
-                  </h2>
-                </div>
-
-                <div className="rounded-full bg-accent/50 p-4">
-                  <CalendarDays className="h-10 w-10 text-primary" />
-                </div>
-              </CardContent>
-            </Card>
-          </TabsTrigger>
+          {/* PRODUK */}
           <TabsTrigger
             value="products"
             className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
@@ -238,7 +276,127 @@ export default async function AdminDashboardPage({
               </CardContent>
             </Card>
           </TabsTrigger>
-        </TabsList>
+
+          {/* TRANSAKSI */}
+          <TabsTrigger
+            value="transactions"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+          >
+            <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
+              <CardContent className="flex items-center justify-between p-6">
+                <div>
+                  <p className="text-muted-foreground">
+                    Total Transaksi
+                  </p>
+
+                  <h2 className="mt-2 text-4xl font-bold text-primary">
+                    {transactionsResult.count || 0}
+                  </h2>
+                </div>
+
+                <div className="rounded-full bg-accent/50 p-4">
+                  <Receipt className="h-10 w-10 text-primary" />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsTrigger>
+
+          {/* EVENT */}
+          <TabsTrigger
+            value="events"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+          >
+            <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
+              <CardContent className="flex items-center justify-between p-6">
+                <div>
+                  <p className="text-muted-foreground">
+                    Total Event
+                  </p>
+
+                  <h2 className="mt-2 text-4xl font-bold text-primary">
+                    {eventsResult.count || 0}
+                  </h2>
+                </div>
+
+                <div className="rounded-full bg-accent/50 p-4">
+                  <CalendarDays className="h-10 w-10 text-primary" />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsTrigger>
+
+          {/* MEMBER */}
+          <TabsTrigger
+            value="members"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+          >
+            <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
+              <CardContent className="flex items-center justify-between p-6">
+                <div>
+                  <p className="text-muted-foreground">
+                    Total Anggota
+                  </p>
+
+                  <h2 className="mt-2 text-4xl font-bold text-primary">
+                    {membersResult.count || 0}
+                  </h2>
+                </div>
+
+                <div className="rounded-full bg-accent/50 p-4">
+                  <Users className="h-10 w-10 text-primary" />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsTrigger>
+
+          {/* ABSENSI */}
+          <TabsTrigger
+            value="attendances"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+          >
+            <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
+              <CardContent className="flex items-center justify-between p-6">
+                <div>
+                  <p className="text-muted-foreground">
+                    Total Absensi
+                  </p>
+
+                  <h2 className="mt-2 text-4xl font-bold text-primary">
+                    {attendancesResult.count || 0}
+                  </h2>
+                </div>
+
+                <div className="rounded-full bg-accent/50 p-4">
+                  <ClipboardCheck className="h-10 w-10 text-primary" />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsTrigger>
+
+          {/* JADWAL PIKET */}
+          <TabsTrigger
+            value="schedules"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+          >
+            <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
+              <CardContent className="flex items-center justify-between p-6">
+                <div>
+                  <p className="text-muted-foreground">
+                    Jadwal Piket
+                  </p>
+
+                  <h2 className="mt-2 text-4xl font-bold text-primary">
+                    {schedulesResult.count || 0}
+                  </h2>
+                </div>
+
+                <div className="rounded-full bg-accent/50 p-4">
+                  <CalendarClock className="h-10 w-10 text-primary" />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsTrigger>
+          </TabsList>
 
         <TabsContent value="products">
           <ProductTable
@@ -255,6 +413,24 @@ export default async function AdminDashboardPage({
         <TabsContent value="events">
           <EventTable
             events={events || []}
+          />
+        </TabsContent>
+
+        <TabsContent value="members">
+          <MemberTable
+            members={members || []}
+          />
+        </TabsContent>
+
+        {/* <TabsContent value="attendances">
+          <AttendanceTable
+            attendances={attendances || []}
+          />
+        </TabsContent> */}
+
+        <TabsContent value="schedules">
+          <ScheduleTable
+            schedules={schedules || []}
           />
         </TabsContent>
 

@@ -2,10 +2,11 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Receipt, CalendarDays, Sprout, Package } from "lucide-react"
+import { LayoutDashboard, Receipt, CalendarDays, Sprout, Package, Users, CalendarClock } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -13,6 +14,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { logoutAction } from "@/app/(auth)/actions"
+import { buttonVariants } from "../ui/button"
 
 const menus = [
   {
@@ -39,6 +42,16 @@ const menus = [
     title: "Event",
     href: "/admin/event",
     icon: CalendarDays,
+  },
+  {
+    title: "Anggota",
+    href: "/admin/member",
+    icon: Users,
+  },
+  {
+    title: "Jadwal Piket",
+    href: "/admin/schedule",
+    icon: CalendarClock,
   },
 ]
 
@@ -81,6 +94,23 @@ export default function AdminSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu className="gap-2 p-2">
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={buttonVariants({ variant: "destructive", size: "default", className:"px-4 py-6 text-base" })}
+                  onClick={logoutAction}
+                >
+                  Logout
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarFooter>
     </Sidebar>
   )
 }
