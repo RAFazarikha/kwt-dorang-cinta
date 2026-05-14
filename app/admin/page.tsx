@@ -19,8 +19,8 @@ import {
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { MemberTable } from "@/components/admin/member-table"
-// import { AttendanceTable } from "@/components/admin/attendance-table"
 import { ScheduleTable } from "@/components/admin/schedule-table"
+import { AttendancesTable } from "@/components/admin/attendances-table"
 
 export interface Event {
   id: string;
@@ -89,7 +89,6 @@ export default async function AdminDashboardPage({
     transactionsResult,
     eventsResult,
     membersResult,
-    attendancesResult,
     schedulesResult,
   ] = await Promise.all([
     supabase
@@ -115,13 +114,6 @@ export default async function AdminDashboardPage({
 
     supabase
       .from("members")
-      .select("*", {
-        count: "exact",
-        head: true,
-      }),
-
-    supabase
-      .from("routine_attendances")
       .select("*", {
         count: "exact",
         head: true,
@@ -201,21 +193,66 @@ export default async function AdminDashboardPage({
       })
 
   // =========================
-  // FETCH ATTENDANCES
+  // ROUTINE ATTENDANCES
   // =========================
+  const {
+    data: rawRoutineAttendances,
+  } = await supabase
+    .from("routine_attendances")
+    .select(`
+      id,
+      duty_date,
+      status,
+      notes,
+      members (
+        full_name
+      ),
+      duty_schedules (
+        shift_time
+      )
+    `)
+    .order("duty_date", {
+      ascending: false,
+    })
 
-  const { data: attendances } =
-    await supabase
-      .from("routine_attendances")
-      .select(`
-        *,
-        members (
-          full_name
-        )
-      `)
-      .order("duty_date", {
-        ascending: false,
-      })
+  // Format datanya di sini:
+  const routineAttendances = rawRoutineAttendances?.map((item) => ({
+    ...item,
+    // Ambil elemen pertama jika bentuknya array
+    members: Array.isArray(item.members) ? item.members[0] : item.members,
+    duty_schedules: Array.isArray(item.duty_schedules) ? item.duty_schedules[0] : item.duty_schedules,
+  })) || []
+
+  // =========================
+  // EVENT ATTENDANCES
+  // =========================
+  const {
+    data: rawEventAttendances,
+  } = await supabase
+    .from("event_attendances")
+    .select(`
+      id,
+      attended_at,
+      members (
+        full_name
+      ),
+      events (
+        title,
+        location,
+        event_date
+      )
+    `)
+    .order("attended_at", {
+      ascending: false,
+    })
+
+  // Format datanya di sini:
+  const eventAttendances = rawEventAttendances?.map((item) => ({
+    ...item,
+    // Ambil elemen pertama jika bentuknya array
+    members: Array.isArray(item.members) ? item.members[0] : item.members,
+    events: Array.isArray(item.events) ? item.events[0] : item.events,
+  })) || []
 
   // =========================
   // FETCH SCHEDULES
@@ -354,16 +391,16 @@ export default async function AdminDashboardPage({
             value="attendances"
             className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
           >
-            <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
-              <CardContent className="flex items-center justify-between p-6">
+            <Card className="w-full h-full rounded-2xl border-border shadow-sm transition hover:border-primary">
+              <CardContent className="flex h-full items-center justify-between p-6">
                 <div>
-                  <p className="text-muted-foreground">
-                    Total Absensi
-                  </p>
-
-                  <h2 className="mt-2 text-4xl font-bold text-primary">
-                    {attendancesResult.count || 0}
+                  <h2 className="text-3xl font-bold text-primary">
+                    Data Absensi
                   </h2>
+
+                  <p className="mt-3 text-muted-foreground">
+                    Absensi Piket dan Event
+                  </p>
                 </div>
 
                 <div className="rounded-full bg-accent/50 p-4">
@@ -422,11 +459,16 @@ export default async function AdminDashboardPage({
           />
         </TabsContent>
 
-        {/* <TabsContent value="attendances">
-          <AttendanceTable
-            attendances={attendances || []}
+        <TabsContent value="attendances">
+          <AttendancesTable
+            routineAttendances={
+              routineAttendances || []
+            }
+            eventAttendances={
+              eventAttendances || []
+            }
           />
-        </TabsContent> */}
+        </TabsContent>
 
         <TabsContent value="schedules">
           <ScheduleTable
