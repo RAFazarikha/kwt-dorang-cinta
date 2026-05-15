@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation"
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 
 import { createClient } from "@/lib/supabase/client"
+import Link from "next/link"
+import { ArrowLeft } from "lucide-react"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -37,16 +39,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
+    <div className="flex flex-col gap-9 min-h-screen items-center justify-center bg-muted/30 px-4">
       <Card className="w-full max-w-md rounded-2xl border-border shadow-lg">
         <CardContent className="space-y-6 p-8">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-primary">
-              Admin Login
+              Selamat datang kembali!
             </h1>
 
             <p className="mt-2 text-muted-foreground">
-              KWT Dorang Cinta Dashboard
+              Login untuk anggota resmi KWT Dorang Cinta.
             </p>
           </div>
 
@@ -72,6 +74,14 @@ export default function LoginPage() {
           </Button>
         </CardContent>
       </Card>
+
+      <Link
+        href="/"
+        className={buttonVariants({ variant: "ghost", size: "lg" })}>
+        <ArrowLeft />
+        Back to home
+      </Link>
+
     </div>
   )
 }

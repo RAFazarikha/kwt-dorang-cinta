@@ -102,7 +102,7 @@ export default function Navbar() {
         </nav>
 
         {/* Desktop Button */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex lg:flex-row lg:gap-3">
           {user ? (
             <Link
               href={url}
@@ -116,17 +116,30 @@ export default function Navbar() {
               Dashboard
             </Link>
           ) : (
-            <a
-              href={waLink}
-              className={buttonVariants({
-                variant: "default",
-                size: "default",
-                className:
-                  "rounded-lg bg-primary px-6 text-white hover:bg-secondary",
-              })}
-            >
-              Gabung Komunitas
-            </a>
+            <>
+              <a
+                href={waLink}
+                className={buttonVariants({
+                  variant: "default",
+                  size: "default",
+                  className:
+                    "w-min rounded-lg px-6",
+                })}
+              >
+                Gabung Komunitas
+              </a>
+              <Link
+                href="/login"
+                className={buttonVariants({
+                  variant: "secondary",
+                  size: "default",
+                  className:
+                    "w-min rounded-lg px-6",
+                })}
+              >
+                Login
+              </Link>
+            </>
           )}
         </div>
 
@@ -174,7 +187,7 @@ export default function Navbar() {
                 </nav>
 
                 {/* Footer */}
-                <div className="border-t border-border p-6">
+                <div className="flex flex-col gap-3 border-t border-border p-6">
                   {user ? (
                     <Link
                       href={url}
@@ -188,17 +201,30 @@ export default function Navbar() {
                       Dashboard
                     </Link>
                   ) : (
-                    <a
-                      href={waLink}
-                      className={buttonVariants({
-                        variant: "default",
-                        size: "default",
-                        className:
-                          "w-full rounded-lg bg-primary px-6 text-white hover:bg-secondary",
-                      })}
-                    >
-                      Gabung Komunitas
-                    </a>
+                    <>
+                      <a
+                        href={waLink}
+                        className={buttonVariants({
+                          variant: "default",
+                          size: "default",
+                          className:
+                            "w-full rounded-lg",
+                        })}
+                      >
+                        Gabung Komunitas
+                      </a>
+                      <Link
+                        href="/login"
+                        className={buttonVariants({
+                          variant: "secondary",
+                          size: "default",
+                          className:
+                            "w-full rounded-lg",
+                        })}
+                      >
+                        Login
+                      </Link>
+                    </>
                   )}
                 </div>
               </div>
