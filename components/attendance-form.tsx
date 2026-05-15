@@ -17,6 +17,7 @@ import {
   MapPin,
   Users,
 } from "lucide-react"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 type DutySchedule = {
   id: string
@@ -46,7 +47,7 @@ export default function AttendanceForm() {
   const [memberId, setMemberId] = useState("")
   const [schedule, setSchedule] = useState<DutySchedule | null>(null)
   const [eventData, setEventData] = useState<Event | null>(null)
-
+  const [status, setStatus] = useState("Hadir")
   const [notes, setNotes] = useState("")
 
   useEffect(() => {
@@ -159,7 +160,7 @@ export default function AttendanceForm() {
             schedule_id: schedule.id,
             member_id: memberId,
             duty_date: todayDate,
-            status: "Hadir",
+            status: status,
             notes,
           })
 
@@ -297,6 +298,27 @@ export default function AttendanceForm() {
             </div>
           </div>
         )}
+
+        <div className="space-y-2">
+          <Label>Status</Label>
+
+          <Select
+            value={status}
+            onValueChange={(e) => setStatus(e ?? "")}
+          >
+            <SelectTrigger className={"w-full"}>
+              <SelectValue placeholder="Pilih status" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Status</SelectLabel>
+                <SelectItem value="Hadir">Hadir</SelectItem>
+                <SelectItem value="Izin">Izin</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* NOTES */}
         <div className="space-y-2">

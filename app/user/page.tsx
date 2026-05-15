@@ -75,7 +75,7 @@ export default async function UserPage() {
         <div className="space-y-4">
 
           {/* ABSENSI PIKET */}
-          <Card className="rounded-3xl border-none shadow-sm">
+          <Card className="rounded-3xl border-none shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
             <CardHeader className="pb-3">
               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
                 <ClipboardList className="h-6 w-6 text-primary" />
@@ -98,7 +98,7 @@ export default async function UserPage() {
           </Card>
 
           {/* ABSENSI EVENT */}
-          <Card className="rounded-3xl border-none shadow-sm">
+          <Card className="rounded-3xl border-none shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
             <CardHeader className="pb-3">
               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
                 <CalendarCheck className="h-6 w-6 text-primary" />
@@ -127,7 +127,7 @@ export default async function UserPage() {
             type="submit"
             variant="destructive"
             onClick={logoutAction}
-            className="h-11 w-full rounded-2xl"
+            className="h-11 w-full rounded-2xl cursor-pointer"
           >
             <LogOut className="mr-2 h-4 w-4" />
             Logout

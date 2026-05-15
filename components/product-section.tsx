@@ -117,6 +117,7 @@ export default async function ProductSection({
                         }
                         alt={product.name}
                         fill
+                        sizes="100"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-primary backdrop-blur">

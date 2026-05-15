@@ -1,8 +1,9 @@
 "use client"
 
 import Link from "next/link"
+import { useEffect, useState } from "react"
 import { Menu } from "lucide-react"
-
+import type { User } from "@supabase/supabase-js"
 import { Button, buttonVariants } from "@/components/ui/button"
 
 import {
@@ -10,6 +11,8 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
+
+import { createClient } from "@/lib/supabase/client"
 
 const navItems = [
   {
@@ -34,13 +37,49 @@ const navItems = [
   },
 ]
 
-const phoneNumber = "6281235816937";
-const message = "Halo, saya tertarik dengan sayuran hidroponiknya!";
-const waLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+const phoneNumber = "6281235816937"
+const message = "Halo, saya tertarik dengan sayuran hidroponiknya!"
+const waLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
 
 export default function Navbar() {
+  const supabase = createClient()
+
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      setUser(user)
+    }
+
+    getUser()
+
+    // realtime auth listener
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [supabase])
+
+  const role = user?.user_metadata?.role
+
+  let url = "";
+
+  if (role === "admin") {
+    url = "/admin"
+  } else {
+    url = "/user"
+  }
+
   return (
-    <header className="fixed w-full top-0 z-50 border-b border-border bg-white/90 backdrop-blur">
+    <header className="fixed top-0 z-50 w-full border-b border-border bg-white/90 backdrop-blur">
       <div className="container-custom flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/">
@@ -64,12 +103,31 @@ export default function Navbar() {
 
         {/* Desktop Button */}
         <div className="hidden lg:block">
-          <a
-            href={waLink}
-            className={buttonVariants({ variant: "default", size: "default", className: "rounded-lg bg-primary px-6 text-white hover:bg-secondary" })}
-          >
-            Gabung Komunitas
-          </a>
+          {user ? (
+            <Link
+              href={url}
+              className={buttonVariants({
+                variant: "default",
+                size: "default",
+                className:
+                  "rounded-lg bg-primary px-6 text-white hover:bg-secondary",
+              })}
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <a
+              href={waLink}
+              className={buttonVariants({
+                variant: "default",
+                size: "default",
+                className:
+                  "rounded-lg bg-primary px-6 text-white hover:bg-secondary",
+              })}
+            >
+              Gabung Komunitas
+            </a>
+          )}
         </div>
 
         {/* Mobile Sidebar */}
@@ -79,8 +137,9 @@ export default function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="hover:bg-secondary/10">
-                  <Menu className="h-6 w-6 text-primary" />
+                className="hover:bg-secondary/10"
+              >
+                <Menu className="h-6 w-6 text-primary" />
               </Button>
             }>
             </SheetTrigger>
@@ -116,12 +175,31 @@ export default function Navbar() {
 
                 {/* Footer */}
                 <div className="border-t border-border p-6">
-                  <a
-                    href={waLink}
-                    className={buttonVariants({ variant: "default", size: "default", className: "rounded-lg bg-primary px-6 text-white hover:bg-secondary" })}
-                  >
-                    Gabung Komunitas
-                  </a>
+                  {user ? (
+                    <Link
+                      href={url}
+                      className={buttonVariants({
+                        variant: "default",
+                        size: "default",
+                        className:
+                          "w-full rounded-lg bg-primary px-6 text-white hover:bg-secondary",
+                      })}
+                    >
+                      Dashboard
+                    </Link>
+                  ) : (
+                    <a
+                      href={waLink}
+                      className={buttonVariants({
+                        variant: "default",
+                        size: "default",
+                        className:
+                          "w-full rounded-lg bg-primary px-6 text-white hover:bg-secondary",
+                      })}
+                    >
+                      Gabung Komunitas
+                    </a>
+                  )}
                 </div>
               </div>
             </SheetContent>

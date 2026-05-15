@@ -293,7 +293,7 @@ export default async function AdminDashboardPage({
           {/* PRODUK */}
           <TabsTrigger
             value="products"
-            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent hover:cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
               <CardContent className="flex items-center justify-between p-6">
@@ -317,7 +317,7 @@ export default async function AdminDashboardPage({
           {/* TRANSAKSI */}
           <TabsTrigger
             value="transactions"
-            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent hover:cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
               <CardContent className="flex items-center justify-between p-6">
@@ -341,7 +341,7 @@ export default async function AdminDashboardPage({
           {/* EVENT */}
           <TabsTrigger
             value="events"
-            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent hover:cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
               <CardContent className="flex items-center justify-between p-6">
@@ -365,7 +365,7 @@ export default async function AdminDashboardPage({
           {/* MEMBER */}
           <TabsTrigger
             value="members"
-            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent hover:cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
               <CardContent className="flex items-center justify-between p-6">
@@ -389,7 +389,7 @@ export default async function AdminDashboardPage({
           {/* ABSENSI */}
           <TabsTrigger
             value="attendances"
-            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent hover:cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             <Card className="w-full h-full rounded-2xl border-border shadow-sm transition hover:border-primary">
               <CardContent className="flex h-full items-center justify-between p-6">
@@ -413,7 +413,7 @@ export default async function AdminDashboardPage({
           {/* JADWAL PIKET */}
           <TabsTrigger
             value="schedules"
-            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent"
+            className="h-auto! border-0 bg-transparent p-0 data-[state=active]:bg-transparent hover:cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             <Card className="w-full rounded-2xl border-border shadow-sm transition hover:border-primary">
               <CardContent className="flex items-center justify-between p-6">

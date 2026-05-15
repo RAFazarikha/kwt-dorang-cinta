@@ -26,6 +26,11 @@ export default async function EventSection({
   const supabase =
     await createClient()
 
+  const now = new Date()
+
+  const todayDate = now
+    .toLocaleDateString("en-CA")
+
   // =========================
   // FETCH EVENTS
   // =========================
@@ -33,6 +38,7 @@ export default async function EventSection({
     .from("events")
     .select("*")
     .eq("is_published", true)
+    .gte("event_date", todayDate)
     .order("event_date", {
       ascending: true,
     })
@@ -86,6 +92,7 @@ export default async function EventSection({
                   }
                   alt={event.title}
                   fill
+                  sizes="100"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
 

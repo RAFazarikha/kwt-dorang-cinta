@@ -90,7 +90,7 @@ export function AttendancesTable({
             : "-",
 
         status: (
-          <Badge>
+          <Badge variant={(attendance.status === "Hadir") ? "default" : "secondary"} className="w-full">
             {attendance.status}
           </Badge>
         ),

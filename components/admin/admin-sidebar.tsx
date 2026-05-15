@@ -101,7 +101,7 @@ export default function AdminSidebar() {
             <SidebarMenu className="gap-2 p-2">
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  className={buttonVariants({ variant: "destructive", size: "default", className:"px-4 py-6 text-base" })}
+                  className={buttonVariants({ variant: "destructive", size: "default", className:"px-4 py-6 text-base cursor-pointer" })}
                   onClick={logoutAction}
                 >
                   Logout
