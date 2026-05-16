@@ -21,7 +21,7 @@ const navItems = [
   },
   {
     label: "Galeri",
-    href: "#",
+    href: "/galeri",
   },
   {
     label: "Kontak",
@@ -103,9 +103,7 @@ export default function Footer() {
                 <MapPin className="mt-1 h-5 w-1/6 text-primary" />
 
                 <p className="w-5/6 leading-7 text-muted-foreground">
-                  RT.10 RW.03 Kelurahan Perak Barat,
-                  Kecamatan Krembangan,
-                  Surabaya, Jawa Timur
+                RT 10 RW 03, Jl. Ikan Dorang Baru I, Kelurahan Perak Barat, Kecamatan Krembangan, Kota Surabaya, Jawa Timur.
                 </p>
               </div>
 

@@ -29,7 +29,7 @@ const navItems = [
   },
   {
     label: "Galeri",
-    href: "#",
+    href: "/galeri",
   },
   {
     label: "Kontak",

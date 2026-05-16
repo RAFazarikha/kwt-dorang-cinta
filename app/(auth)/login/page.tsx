@@ -7,9 +7,24 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
 
+// Import komponen Field sesuai contoh Anda
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@/components/ui/field"
+
+// Import komponen InputGroup
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
+
 import { createClient } from "@/lib/supabase/client"
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -17,6 +32,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const supabase = createClient()
 
@@ -52,18 +68,52 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <Input
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          {/* Penggunaan FieldSet dan FieldGroup di sini */}
+          <FieldSet className="w-full">
+            <FieldGroup>
 
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+              {/* Field Email */}
+              <Field>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="contoh@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Field>
+
+              {/* Field Password */}
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <InputGroup className="px-1">
+                  <InputGroupInput
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <InputGroupAddon align="inline-end">
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="text-muted-foreground hover:text-foreground focus:outline-none flex items-center justify-center"
+                      aria-label={showPassword ? "Sembunyikan password" : "Lihat password"}
+                    >
+                      {showPassword ? (
+                        <Eye className="h-5 w-5" />
+                      ) : (
+                        <EyeOff className="h-5 w-5" />
+                      )}
+                    </button>
+                  </InputGroupAddon>
+                </InputGroup>
+              </Field>
+
+            </FieldGroup>
+          </FieldSet>
 
           <Button
             onClick={handleLogin}
@@ -78,10 +128,9 @@ export default function LoginPage() {
       <Link
         href="/"
         className={buttonVariants({ variant: "ghost", size: "lg" })}>
-        <ArrowLeft />
+        <ArrowLeft className="mr-2 h-4 w-4" />
         Back to home
       </Link>
-
     </div>
   )
 }

@@ -8,12 +8,12 @@ import {
 const stats = [
   {
     icon: Users,
-    value: "30+",
+    value: "25+",
     label: "Anggota Aktif",
   },
   {
     icon: Heart,
-    value: "500+",
+    value: "100+",
     label: "Pelanggan Setia",
   },
   {
